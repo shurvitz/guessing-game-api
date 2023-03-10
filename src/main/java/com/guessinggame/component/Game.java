@@ -10,6 +10,16 @@ import java.util.UUID;
 
 @Entity
 public class Game {
+    /**
+     * The default start range for the game if not specified in the constructor.
+     */
+    public final static int DEFAULT_FROM = 1;
+
+    /**
+     * The default end range for the game if not specified in the constructor.
+     */
+    public final static int DEFAULT_TO = 100;
+
     @Id
     private String id;
     private int guessingAttempts;
@@ -19,7 +29,9 @@ public class Game {
     private int toRange;
     private Instant lastModified;
 
-    public Game() {}
+    public Game() {
+        this(DEFAULT_FROM, DEFAULT_TO);
+    }
 
     public Game(int fromRange, int toRange) {
         id = UUID.randomUUID().toString();

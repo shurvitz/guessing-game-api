@@ -1,6 +1,5 @@
 package com.guessinggame.controller;
 
-import com.guessinggame.api.GuessingGameApi;
 import com.guessinggame.component.Game;
 import com.guessinggame.component.GameRange;
 import com.guessinggame.component.GameReply;
@@ -41,11 +40,11 @@ class GuessingGameControllerTest {
         Optional<Game> gameRecord = gameRepository.findById(gameId);
         assertTrue(gameRecord.isPresent(), "Expected to find game in repo by ID");
         Game game = gameRecord.get();
-        assertEquals(GuessingGameApi.DEFAULT_FROM, game.getFromRange(), "Expected from ranges to equal");
-        assertEquals(GuessingGameApi.DEFAULT_TO, game.getToRange(), "Expected to ranges to equal");
+        assertEquals(Game.DEFAULT_FROM, game.getFromRange(), "Expected from ranges to equal");
+        assertEquals(Game.DEFAULT_TO, game.getToRange(), "Expected to ranges to equal");
         int secretNumber = game.getSecretNumber();
-        assertTrue(secretNumber >= GuessingGameApi.DEFAULT_FROM &&
-                secretNumber <= GuessingGameApi.DEFAULT_TO);
+        assertTrue(secretNumber >= Game.DEFAULT_FROM && secretNumber <= Game.DEFAULT_TO,
+                "Expected secret number to be in range of default start and end");
         assertEquals(0, game.getGuessingAttempts(), "Expected 0 guessing attempts");
         assertEquals(game.getGuessingAttempts(), gameReply.getGuessingAttempts(),
                 "Expected guessing attempts to equal");
@@ -62,7 +61,7 @@ class GuessingGameControllerTest {
         String gameId = gameReply.getGameId();
         assertNotNull(gameId, "Expected game ID to be non-null");
 
-        gameReply = guessNumber(gameId, GuessingGameApi.DEFAULT_FROM - 1);
+        gameReply = guessNumber(gameId, Game.DEFAULT_FROM - 1);
 
         assertNotNull(gameReply, "Expected GameReply object to be non-null");
         assertEquals(gameId, gameReply.getGameId(), "Expected game IDs to equal");
@@ -81,7 +80,7 @@ class GuessingGameControllerTest {
         String gameId = gameReply.getGameId();
         assertNotNull(gameId, "Expected game ID to be non-null");
 
-        gameReply = guessNumber(gameId, GuessingGameApi.DEFAULT_TO + 1);
+        gameReply = guessNumber(gameId, Game.DEFAULT_TO + 1);
 
         assertNotNull(gameReply, "Expected GameReply object to be non-null");
         assertEquals(gameId, gameReply.getGameId(), "Expected game IDs to equal");
@@ -101,8 +100,8 @@ class GuessingGameControllerTest {
         assertNotNull(gameId, "Expected game ID to be non-null");
 
         int attempts = 0;
-        int low = GuessingGameApi.DEFAULT_FROM;
-        int high = GuessingGameApi.DEFAULT_TO;
+        int low = Game.DEFAULT_FROM;
+        int high = Game.DEFAULT_TO;
 
         do {
             int guess = (low + high) / 2;

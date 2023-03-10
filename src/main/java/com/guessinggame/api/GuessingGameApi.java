@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GuessingGameApi {
     private final GameRepository gameRepository;
-    public final static int DEFAULT_FROM = 1;
-    public final static int DEFAULT_TO = 100;
 
     /**
      * Constructor
@@ -34,10 +32,10 @@ public class GuessingGameApi {
         if (from < to) {
             game = new Game(from, to);
         } else { // Invalid - from must be less than to
-            game = new Game(DEFAULT_FROM, DEFAULT_TO);
+            game = new Game();
             System.out.printf(
                     "%s (range specified {from %d to %d} is invalid, using default range {from %d to %d})\n",
-                    game, from, to, DEFAULT_FROM, DEFAULT_TO
+                    game, from, to, Game.DEFAULT_FROM, Game.DEFAULT_TO
             );
         }
 
