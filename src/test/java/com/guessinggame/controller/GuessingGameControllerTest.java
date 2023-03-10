@@ -4,6 +4,8 @@ import com.guessinggame.component.Game;
 import com.guessinggame.component.GameRange;
 import com.guessinggame.component.GameReply;
 import com.guessinggame.component.GameRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -14,9 +16,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,6 +32,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GuessingGameControllerTest {
     @Autowired GameRepository gameRepository;
     @Autowired WebTestClient client;
+
+    @BeforeEach
+    public void setup() {
+        gameRepository.deleteAll();
+    }
+
+    @AfterEach
+    public void teardown() {
+        gameRepository.deleteAll();
+    }
 
     @Order(1)
     @Test
@@ -119,6 +135,38 @@ class GuessingGameControllerTest {
         } while (low <= high && gameReply.getGuessStatus() != 0);
 
         assertEquals(0, gameReply.getGuessStatus(), "Expected guess status of 0 (found number)");
+    }
+
+    @Order(5)
+    @Test
+    void getListOfGamesTest() {
+        System.out.println("Test --- GuessingGameControllerTest:getListOfGamesTest");
+
+        GameReply game1Reply = startNewGame();
+        GameReply game2Reply = startNewGame();
+        Set<String> games = new HashSet<>(Set.of(game1Reply.getGameId(), game2Reply.getGameId()));
+        Iterable<Game> iterable = client.get()
+                .uri("/guess/games")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Game.class)
+                .returnResult()
+                .getResponseBody();
+
+        assertNotNull(iterable, "Expected Iterable object to be non-null");
+
+        Iterator<Game> iterator = iterable.iterator();
+
+        // Game 1
+        assertTrue(iterator.hasNext(), "Expected iterable to contain 1st Game object");
+        assertTrue(games.contains(iterator.next().getId()), "Expected 1st game to exist in iterable");
+
+        // Game 2
+        assertTrue(iterator.hasNext(), "Expected iterable to contain 2nd Game object");
+        assertTrue(games.contains(iterator.next().getId()), "Expected 2nd game to exist in iterable");
+
+        // Game 3
+        assertFalse(iterator.hasNext(), "Expected no more Game objects in iterable");
     }
 
     private GameReply startNewGame() {
