@@ -1,7 +1,9 @@
 # Guessing Game API
-This application allows a user to play a guessing game with a predetermined range via REST APIs. Once the application
-chooses a number, any guess by the user will prompt a response of "Lower" or "Higher" until the exact number is guessed.
-The game can be played using ***Postman***, or any other app/cli that can send REST API requests.
+This application demonstrates the principles of GaaS (Guessing-as-a-Service) using Spring Boot.
+
+The service allows a user to play a guessing game via REST APIs. Once the application chooses a number within the range
+specified by the user, any guess made by the user will prompt a response of "Lower" or "Higher" until the exact number
+is guessed. The game can be played using ***Postman***, or any other app/cli that can send REST API requests.
 
 ## Initiating the game
 1. Clone this repo and pull into your local machine.
