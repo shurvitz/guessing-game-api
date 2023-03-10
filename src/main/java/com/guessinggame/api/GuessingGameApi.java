@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GuessingGameApi {
     private final GameRepository gameRepository;
-    private final static int DEFAULT_FROM = 1;
-    private final static int DEFAULT_TO = 100;
+    public final static int DEFAULT_FROM = 1;
+    public final static int DEFAULT_TO = 100;
 
     /**
      * Constructor
