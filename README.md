@@ -7,7 +7,7 @@ is guessed. The game can be played using ***Postman***, or any other app/cli tha
 
 ## Initiating the game
 1. Clone this repo and pull into your local machine.
-2. `GuessingGameApplication` (IntelliJ IDEA).
+2. `GuessingGameApplication` (IntelliJ IDEA), or
 3. `mvn clean install` followed by `java -jar target/guessing-game-0.0.1-SNAPSHOT.jar` (terminal). 
 
 The Spring Boot application will start running and will be listening on **localhost:8082** (port 8082).
