@@ -37,7 +37,7 @@ The reply from the API is as follows:
 
 * `gameId` - The ID used to reference the game for subsequent guessing requests.
 * `guessingAttempts` - The application keeps track of the number of guessing attempts made (initial value is 0).
-* `guessStatus` - Indicates whether the number picked by the application is lower (-1), higher (1), or matches the guess (0).
+* `guessStatus` - Indicates whether the number picked by the application is lower (-1), higher (1), or matches the guess (0 - also the initial value).
 * `replyMessage` - Message from the application.
 
 ## Guessing the number
@@ -54,7 +54,7 @@ Assuming the game id is valid, the reply from the API will have the same format 
   "gameId": "a3f85307-22a5-4942-9782-d611d344368a",
   "guessingAttempts": 1,
   "guessStatus": 1,
-  "replyMessage": "Higher..."
+  "replyMessage": "The number is higher..."
 }
 ```
 ***Note:*** when the game is finally won, the response will contain `"guessStatus": 0` with a congratulatory replyMessage.

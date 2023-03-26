@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
  * This class handles the APIs business logic.
  */
 public class GuessingGameApi {
+    private final static int GUESS_STATUS_NUMBER_IS_LOWER = -1;
+    private final static int GUESS_STATUS_NUMBER_IS_HIGHER = 1;
+    private final static int GUESS_STATUS_NUMBER_MATCHES = 0;
     private final GameRepository gameRepository;
 
     /**
@@ -42,8 +45,12 @@ public class GuessingGameApi {
         gameRepository.save(game);
         System.out.println(game + " (game started)");
 
-        return new GameReply(game.getId(), 0, 0,
-                "Guess a number from " + game.getFromRange() + " to " + game.getToRange() + "?");
+        return new GameReply(
+                game.getId(),
+                0,
+                0,
+                "Guess a number from " + game.getFromRange() + " to " + game.getToRange() + "?"
+        );
     }
 
     /**
@@ -59,17 +66,31 @@ public class GuessingGameApi {
         game.incrementAttempts();
         System.out.println(game + " (guess: " + guess + ")");
 
-        if (guess == secretNumber) {
-            gameRepository.deleteById(game.getId());
-            System.out.println(game + " (game ended)");
-            return new GameReply(game.getId(), game.getGuessingAttempts(), 0,
-                    "Congrats!!! You've guessed my number: " + game.getSecretNumber());
+        if (guess > secretNumber) {
+            gameRepository.save(game);
+            return new GameReply(
+                    game.getId(),
+                    game.getGuessingAttempts(),
+                    GUESS_STATUS_NUMBER_IS_LOWER,
+                    "The number is lower..."
+            );
         } else if (guess < secretNumber) {
             gameRepository.save(game);
-            return new GameReply(game.getId(), game.getGuessingAttempts(), 1, "Higher...");
+            return new GameReply(
+                    game.getId(),
+                    game.getGuessingAttempts(),
+                    GUESS_STATUS_NUMBER_IS_HIGHER,
+                    "The number is higher..."
+            );
         } else {
-            gameRepository.save(game);
-            return new GameReply(game.getId(), game.getGuessingAttempts(), -1, "Lower...");
+            gameRepository.deleteById(game.getId());
+            System.out.println(game + " (game ended)");
+            return new GameReply(
+                    game.getId(),
+                    game.getGuessingAttempts(),
+                    GUESS_STATUS_NUMBER_MATCHES,
+                    "Congrats!!! You've guessed my number: " + game.getSecretNumber()
+            );
         }
     }
 }

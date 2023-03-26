@@ -56,7 +56,7 @@ public class GuessingGameController {
             return new ResponseEntity<>(gameReply, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
-                    new GameReply(id, 0, 0, e.getMessage()),
+                    new GameReply(id, 0, 0, "Error: " + e.getMessage()),
                     HttpStatus.NOT_FOUND
             );
         }
