@@ -5,10 +5,12 @@ import com.guessinggame.component.GameRange;
 import com.guessinggame.component.GameReply;
 import com.guessinggame.component.GameRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 
 /**
  * This class handles the APIs business logic.
  */
+@Service
 public class GuessingGameApi {
     private final static int GUESS_STATUS_NUMBER_IS_LOWER = -1;
     private final static int GUESS_STATUS_NUMBER_IS_HIGHER = 1;

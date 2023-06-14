@@ -24,9 +24,9 @@ public class GuessingGameController {
     private final GameRepository gameRepository;
     private final GuessingGameApi guessingGameApi;
 
-    public GuessingGameController(GameRepository gameRepository) {
+    public GuessingGameController(GameRepository gameRepository, GuessingGameApi guessingGameApi) {
         this.gameRepository = gameRepository;
-        guessingGameApi = new GuessingGameApi(this.gameRepository);
+        this.guessingGameApi = guessingGameApi;
     }
 
     /**
@@ -53,7 +53,7 @@ public class GuessingGameController {
         try {
             GameReply gameReply = guessingGameApi.guessNumber(gameRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Game ID is invalid")), guess);
-            return new ResponseEntity<>(gameReply, HttpStatus.OK);
+            return ResponseEntity.ok(gameReply);
         } catch (Exception e) {
             return new ResponseEntity<>(
                     new GameReply(id, 0, 0, "Error: " + e.getMessage()),
